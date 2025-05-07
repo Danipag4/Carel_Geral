@@ -31,7 +31,7 @@ aval = ["Autoavaliação","Gestor","Pares","Liderados"]
 ### Paulo Signorini
 #""" )
 
-Nome = st.sidebar.selectbox("Setores",df["Setor"].unique())
+Nome = st.selectbox("Setores",df["Setor"].unique())
 
 df_filtered = df[df["Setor"] == Nome]
 #df_filtered
@@ -78,7 +78,7 @@ fig_comp
 #-----------------------------------------------------------------------------------------
 
 st.write("""
-## Desempenho Geral por Competência no Setor
+## Desempenho Geral por Competência
 """ )
 #col1, col2 = st.columns(2)
 
@@ -89,37 +89,14 @@ st.write("""
 
 #with col2:
 Compet_Desemp = st.selectbox("Defina a Competência",df["Compet"].unique(),index=1)
-df_filtered5 = df_filtered[df["Compet"] == Compet_Desemp]
+df_filtered5 = df[df["Compet"] == Compet_Desemp]
 
-df_MédiaGeral = df_filtered5.groupby("Nome")[["Autoavaliação","Gestor","Pares","Liderados"]].mean().round(decimals=2).reset_index()
+df_MédiaGeral = df_filtered5.groupby("Setor")[["Autoavaliação","Gestor","Pares","Liderados"]].mean().round(decimals=2).reset_index()
 #df_MédiaGeral
 
-fig_DesenvGeral = px.bar(df_MédiaGeral, y=aval, x="Nome", barmode='group',color_discrete_map = {"Autoavaliação":"Red", "Gestor":"Blue","Pares":"Yellow", "Liderados":"MediumPurple"})
-fig_DesenvGeral.update_layout(xaxis_title="Colaboradores do Setor", yaxis_title="Médias")
+fig_DesenvGeral = px.bar(df_MédiaGeral, x=aval, y="Setor", orientation="h", barmode='group',color_discrete_map = {"Autoavaliação":"Red", "Gestor":"Blue","Pares":"Yellow", "Liderados":"MediumPurple"})
+fig_DesenvGeral.update_layout(xaxis_title="Médiase", yaxis_title="Setor")
 fig_DesenvGeral
 
-#---------------------------------------------------------------------------------
-
-st.write("""
-## Desempenho Carel das Competência por Setor
-""" )
-#df["Nivel avaliação"]
-#df["Setorial"]
-
-unico_Setor = st.selectbox("Defina o Setor",df["Setorial"].unique())
-
-#setorial = st.selectbox("Defina o Setor",df["Nivel avaliação"].unique(),index=1)
-
-df_filtered7 = df[df["Setor"] == unico_Setor]
-#df_filtered7
 
 
-
-df_MédiaSetor = df_filtered7.groupby("Competencia")[["Autoavaliação","Gestor","Pares","Liderados"]].mean().round(decimals=2).reset_index()
-#df_MédiaSetor
-
-fig_DesenvSetor = px.bar(df_MédiaSetor, y=aval, x="Competencia", barmode='group',color_discrete_map = {"Autoavaliação":"Red", "Gestor":"Blue","Pares":"Yellow", "Liderados":"MediumPurple"})
-fig_DesenvSetor.update_layout(xaxis_title="Competência", yaxis_title="Médias")
-fig_DesenvSetor
-
-#---------------------------------------------------------------------------------
