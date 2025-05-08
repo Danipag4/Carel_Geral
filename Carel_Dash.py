@@ -31,7 +31,7 @@ aval = ["Autoavaliação","Gestor","Pares","Liderados"]
 ### Paulo Signorini
 #""" )
 
-Nome = st.selectbox("Setores",df["Setor"].unique())
+Nome = st.selectbox("Setor",df["Setor"].unique())
 
 df_filtered = df[df["Setor"] == Nome]
 #df_filtered
@@ -78,8 +78,8 @@ fig_comp
 #-----------------------------------------------------------------------------------------
 
 st.write("""
-## Desempenho Geral por Competência
-""" )
+## Desempenho Geral por Colaborador
+""" ), Nome
 #col1, col2 = st.columns(2)
 
 #with col1:
@@ -88,14 +88,16 @@ st.write("""
 #df_Comp = df_filtered4["Compet"].dropna().reset_index(drop = True)
 
 #with col2:
-Compet_Desemp = st.selectbox("Defina a Competência",df["Compet"].unique(),index=1)
-df_filtered5 = df[df["Compet"] == Compet_Desemp]
+aval2 = ["Autoavaliação","Gestor"]
+Compet_Desemp = Nome
+#Compet_Desemp = st.selectbox("Defina o Setor",df["Setor"].unique(),index=1)
+df_filtered5 = df[df["Setor"] == Compet_Desemp]
 
-df_MédiaGeral = df_filtered5.groupby("Setor")[["Autoavaliação","Gestor","Pares","Liderados"]].mean().round(decimals=2).reset_index()
+df_MédiaGeral = df_filtered5.groupby("Nome")[["Autoavaliação","Gestor"]].mean().round(decimals=2).reset_index()
 #df_MédiaGeral
 
-fig_DesenvGeral = px.bar(df_MédiaGeral, x=aval, y="Setor", orientation="h", barmode='group',color_discrete_map = {"Autoavaliação":"Red", "Gestor":"Blue","Pares":"Yellow", "Liderados":"MediumPurple"})
-fig_DesenvGeral.update_layout(xaxis_title="Médiase", yaxis_title="Setor")
+fig_DesenvGeral = px.bar(df_MédiaGeral, x=aval2, y="Nome", orientation="h", barmode='group',color_discrete_map = {"Autoavaliação":"Red", "Gestor":"Blue","Pares":"Yellow", "Liderados":"MediumPurple"})
+fig_DesenvGeral.update_layout(xaxis_title="Média", yaxis_title="Colaborador")
 fig_DesenvGeral
 
 
